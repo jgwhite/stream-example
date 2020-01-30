@@ -1,0 +1,28 @@
+<link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+
+<main class="flex p-2 h-full bg-pink-500">
+  <pre id="log" class="bg-gray-900 text-white p-2 shadow-inner flex-grow overflow-auto"></pre>
+</main>
+
+<script>
+  (async () => {
+    let response = await fetch('/data');
+    let reader = response.body.getReader();
+    let element = document.querySelector('#log');
+    let decoder = new TextDecoder('utf-8');
+
+    while (true) {
+      let { done, value } = await reader.read();
+
+      if (done) { break; }
+
+      let wasAtBottom = element.scrollTop >= element.scrollHeight - element.clientHeight;
+
+      element.append(decoder.decode(value));
+
+      if (wasAtBottom) {
+        element.scrollTop = element.scrollHeight - element.clientHeight;
+      }
+    }
+  })();
+</script>
