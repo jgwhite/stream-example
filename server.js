@@ -7,14 +7,31 @@ app.get("/data", async (req, res) => {
   res.contentType('text/plain');
 
   while (true) {
-    res.write(faker.system.fileName() + '\n');
+    let data = faker.system.fileName();
+    console.log(`Sending "${data}"`);
+    res.write(data + '\n');
     await sleep(100);
   }
 });
 
-app.use(express.static('public'))
+app.use(express.static('public'));
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port);
+
+
+
+
+
+
+
+
+
+
+
+
+// ----------------------------------------------
+// Helpers
+// ----------------------------------------------
 
 function sleep(ms) {
   return new Promise(resolve => {
